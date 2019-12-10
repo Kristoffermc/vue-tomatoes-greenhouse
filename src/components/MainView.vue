@@ -3,7 +3,7 @@
         <div>
             <graphs/>
         </div>
-        <div style="width: 100%">
+        <div>
             <slider/>
         </div>
     </div>
@@ -11,7 +11,7 @@
 
 <script>
     import Slider from "./Slider";
-    import Graphs from "./graphs";
+    import Graphs from "./Graphs";
     export default {
         name: "MainView",
         components: {Graphs, Slider}

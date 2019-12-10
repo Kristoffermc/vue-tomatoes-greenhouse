@@ -15,68 +15,119 @@
 </template>
 
 <script>
+    import RestService from "../services/RestService";
+
+    const restService = new RestService();
+
+    let temperatures = [];
+    let humidity = [];
+    let soil = [];
+    let light = [];
+
     export default {
-        name: "graphs",
+        name: "Graphs",
         data: () => ({
+            temperatures: [],
             chartOptionsBar: {
                 xAxis: {
-                    data: ['Q1', 'Q2', 'Q3', 'Q4']
+                    data: []
                 },
                 yAxis: {
                     type: 'value'
                 },
                 series: [
                     {
+                        name: "Temperature",
                         type: 'bar',
-                        data: [63, 75, 24, 92]
+                        data: temperatures,
+                        color: ['#ff002c']
+                    },
+                    {
+                        name: "Humidity",
+                        type: 'bar',
+                        data: humidity,
+                        color: ['#00F']
+                    },
+                    {
+                        name: "Soil",
+                        type: 'bar',
+                        data: soil,
+                        color: ['#00ff01']
+                    },
+                    {
+                        name: "Light",
+                        type: 'bar',
+                        data: light,
+                        color: ['#ffff00']
                     }
                 ],
+                legend: {
+                    bottom: 10,
+                    left: 'center',
+                    data: ['Temperature', 'Humidity', 'Soil', 'Light']
+                },
                 tooltip: {},
                 title: {
-                    text: 'Quarterly Sales Results',
+                    text: 'Sensor data',
                     x: 'center',
                     textStyle: {
                         fontSize: 24
                     }
                 },
-                color: ['#00F']
             },
+
+
             chartOptionsLine: {
                 xAxis: {
-                    data: [
-                        "Jan",
-                        "Feb",
-                        "Mar",
-                        "Apr",
-                        "May",
-                        "Jun",
-                        "Jul",
-                        "Aug",
-                        "Sep",
-                        "Oct",
-                        "Nov",
-                        "Dec"
-                    ]
+                    data: []
                 },
                 yAxis: {
                     type: "value"
                 },
-                tooltip: {},
                 series: [
                     {
+                        name: "Temperature",
                         type: "line",
-                        data: [55, 72, 84, 48, 59, 62, 87, 75, 94, 101, 127, 118]
+                        data: temperatures,
+                        color: ["#ff0000"]
+                    },
+                    {
+                        name: "Humidity",
+                        type: "line",
+                        data: humidity,
+                        color: ["#00F"]
+                    }, {
+                        name: "Soil",
+                        type: "line",
+                        data: soil,
+                        color: ["#00ff0c"]
+                    },
+                    {
+                        name: "Light",
+                        type: 'line',
+                        data: light,
+                        color: ['#ffff00']
                     }
                 ],
+                legend: {
+                    bottom: 10,
+                    left: 'center',
+                    data: ['Temperature', 'Humidity', 'Soil', 'Light']
+                },
+                axisPointer: {
+                    show: "true"
+                },
+                tooltip: {},
                 title: {
-                    text: "Monthly Stock Prices",
+                    text: "Temperature",
                     x: "center",
                     textStyle: {
                         fontSize: 24
                     }
-                },
-                color: ["#00F"]
+                }
             },
+
+
             chartOptionsRadar : {
                 title: {
                     text: 'Basic Radar Chart',
@@ -140,20 +191,6 @@
 
                                 color:
                                     '#0000FF'
-
-                                /*
-                                {
-
-                                type: 'linear',
-                                colorStops: [{
-                                    offset: 0, color: 'red' // color at 0% position
-                                }, {
-                                    offset: 1, color: 'blue' // color at 100% position
-                                }],
-                                global: false // false by default
-
-                            }
-                             */
                             }
                         },
                         data : [
@@ -165,7 +202,32 @@
                         ]
                     }]
             }
-        })
+        }),
+        created: function() {
+            restService.getSensorDataByType("temperature").then(res => {
+                for (let i = 0; i < res.data.data.length; i++) {
+                    temperatures.push(parseFloat(res.data.data[i].value));
+                }
+            });
+
+            restService.getSensorDataByType("humidity").then(res => {
+                for (let i = 0; i < res.data.data.length; i++) {
+                    humidity.push(parseFloat(res.data.data[i].value));
+                }
+            });
+
+            restService.getSensorDataByType("soil").then(res => {
+                for (let i = 0; i < res.data.data.length; i++) {
+                    soil.push(parseFloat(res.data.data[i].value));
+                }
+            });
+
+            restService.getSensorDataByType("light").then(res => {
+                for (let i = 0; i < res.data.data.length; i++) {
+                    light.push(parseFloat(res.data.data[i].value));
+                }
+            });
+        }
     }
 </script>
 

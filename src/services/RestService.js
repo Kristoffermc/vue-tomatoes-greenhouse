@@ -2,8 +2,17 @@ import axios from "axios";
 
 export default class RestService {
 
-    getData() {
-        return axios.get("https://piebrain.net/api/sensors");
+    getSensorDataByType(sensortype) {
+        return axios.get("https://piebrain.net/api/sensorData/name/" + sensortype);
     }
+
+
+    changeLight(value) {
+        return axios.post("https://piebrain.net/api/leds", {
+            "ledId": "1",
+            "ledValue": value
+        });
+    }
+
 
 }

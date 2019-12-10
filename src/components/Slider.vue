@@ -1,21 +1,9 @@
 <template>
-    <div v-if="post">
-        <p>
-            Status: {{this.post.status}}
-            <br>
-            Message: {{this.post.message}}
-            <br>
-            ID: {{this.post.data[0]._id}}
-            <br>
-            Name: {{this.post.data[0].name}}
-            <br>
-            Master: {{this.post.data[0].master}}
-
-        </p>
-        <br><br>
-        <custom-slider min="0" max="100" step="1" :values="sliderValues" raising v-model="slider" />
-        {{ slider }}
+    <div>
+        <custom-slider id="slider" min="-1" max="100" step="1" @change="lol(''+slider)" :values="sliderValues" raising v-model="slider" />
     </div>
+
+
 </template>
 
 <script>
@@ -25,20 +13,28 @@
     import "vue-custom-range-slider/dist/vue-custom-range-slider.css";
     import RestService from "../services/RestService";
 
-
     const restService = new RestService();
+
+
     export default {
+        name: "Slider",
         components: {
             CustomSlider
         },
+        methods: {
+            lol(value) {
+                restService.changeLight(value);
+            }
+        },
         data() {
             return {
-                post: null,
+                listOfInfo: [],
                 slider: "40",
+                handleSlider: "",
                 sliderValues: [
                     {
-                        label: "Not light at all",
-                        value: "0"
+                        label: "No light",
+                        value: "-1"
                     },
                     {
                         label: "A tiny bit",
@@ -62,14 +58,11 @@
                     }
                 ]
             };
-        },
-        created: async function() {
-            restService.getData().then(res => {
-                this.post = res.data
-            });
         }
     };
 </script>
 <style>
-
+    .slider {
+        width: 80%;
+    }
 </style>
