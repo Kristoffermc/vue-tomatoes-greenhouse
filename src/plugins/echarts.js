@@ -9,4 +9,5 @@ import 'echarts/lib/component/tooltip';
 import 'echarts/lib/component/axisPointer';
 
 
+
 Vue.component('chart', Echarts);

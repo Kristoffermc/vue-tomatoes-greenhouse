@@ -15,7 +15,6 @@
 
     const restService = new RestService();
 
-
     export default {
         name: "Slider",
         components: {

@@ -24,6 +24,7 @@
     let soil = [];
     let light = [];
 
+
     export default {
         name: "Graphs",
         data: () => ({
@@ -78,11 +79,21 @@
 
 
             chartOptionsLine: {
+                title: {
+                    text: "Temperature",
+                    x: "center",
+                    textStyle: {
+                        fontSize: 24
+                    }
+                },
+                axisPointer: {
+                    show: "true"
+                },
                 xAxis: {
-                    data: []
+                    data: [],
                 },
                 yAxis: {
-                    type: "value"
+                    type: "value",
                 },
                 series: [
                     {
@@ -96,7 +107,8 @@
                         type: "line",
                         data: humidity,
                         color: ["#00F"]
-                    }, {
+                    },
+                    {
                         name: "Soil",
                         type: "line",
                         data: soil,
@@ -114,17 +126,7 @@
                     left: 'center',
                     data: ['Temperature', 'Humidity', 'Soil', 'Light']
                 },
-                axisPointer: {
-                    show: "true"
-                },
-                tooltip: {},
-                title: {
-                    text: "Temperature",
-                    x: "center",
-                    textStyle: {
-                        fontSize: 24
-                    }
-                }
+                tooltip: {}
             },
 
 
@@ -203,30 +205,41 @@
                     }]
             }
         }),
+        methods: {
+            getTemperature(count) {
+                restService.getSensorDataByType("temperature", count).then(res => {
+                    for (let i = 0; i < res.data.data.length; i++) {
+                        temperatures.push(parseFloat(res.data.data[i].value));
+                    }
+                });
+            },
+            getHumidity(count) {
+                restService.getSensorDataByType("humidity", count).then(res => {
+                    for (let i = 0; i < res.data.data.length; i++) {
+                        humidity.push(parseFloat(res.data.data[i].value));
+                    }
+                });
+            },
+            getLight(count) {
+                restService.getSensorDataByType("light" ,count).then(res => {
+                    for (let i = 0; i < res.data.data.length; i++) {
+                        light.push(parseFloat(res.data.data[i].value));
+                    }
+                });
+            },
+            getSoil(count) {
+                restService.getSensorDataByType("soil", count).then(res => {
+                    for (let i = 0; i < res.data.data.length; i++) {
+                        soil.push(parseFloat(res.data.data[i].value));
+                    }
+                });
+            }
+        },
         created: function() {
-            restService.getSensorDataByType("temperature").then(res => {
-                for (let i = 0; i < res.data.data.length; i++) {
-                    temperatures.push(parseFloat(res.data.data[i].value));
-                }
-            });
-
-            restService.getSensorDataByType("humidity").then(res => {
-                for (let i = 0; i < res.data.data.length; i++) {
-                    humidity.push(parseFloat(res.data.data[i].value));
-                }
-            });
-
-            restService.getSensorDataByType("soil").then(res => {
-                for (let i = 0; i < res.data.data.length; i++) {
-                    soil.push(parseFloat(res.data.data[i].value));
-                }
-            });
-
-            restService.getSensorDataByType("light").then(res => {
-                for (let i = 0; i < res.data.data.length; i++) {
-                    light.push(parseFloat(res.data.data[i].value));
-                }
-            });
+            this.getTemperature(200);
+            this.getHumidity(200);
+            this.getLight(200);
+            this.getSoil(200);
         }
     }
 </script>
