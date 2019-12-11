@@ -11,6 +11,8 @@
         <div class="chart-wrapper">
             <chart :options="chartOptionsRadar"></chart>
         </div>
+
+
     </div>
 </template>
 
@@ -24,11 +26,15 @@
     let soil = [];
     let light = [];
 
+    let optimalTemperature = 25;
+    let optimalHumidity = 60;
+    let optimalLight = 70;
+    let optimalSoil = 60;
+
 
     export default {
         name: "Graphs",
         data: () => ({
-            temperatures: [],
             chartOptionsBar: {
                 xAxis: {
                     data: []
@@ -76,7 +82,6 @@
                     }
                 },
             },
-
 
             chartOptionsLine: {
                 title: {
@@ -129,7 +134,6 @@
                 tooltip: {}
             },
 
-
             chartOptionsRadar : {
                 title: {
                     text: 'Basic Radar Chart',
@@ -160,10 +164,10 @@
                         }
                     },
                     indicator: [
-                        { name: 'Light', max: 6500},
-                        { name: 'Air Humidity', max: 16000},
-                        { name: 'Soil Humidity', max: 30000},
-                        { name: 'Temperature', max: 38000}
+                        { name: 'Light', max: 100},
+                        { name: 'Air Humidity', max: 100},
+                        { name: 'Soil Humidity', max: 100},
+                        { name: 'Temperature', max: 30}
                     ]
                 },
                 // The two different data inputs
@@ -178,7 +182,7 @@
                     },
                     data : [
                         {
-                            value : [4300, 10000, 20000, 29000],
+                            value : [light[0], humidity, soil, temperatures],
                             name : 'Actual plant conditions'
                         }
                     ]
@@ -197,8 +201,7 @@
                         },
                         data : [
                             {
-                                //value : [5000, 14000, 28000, 31000],
-                                value : [6500, 16000, 30000, 38000],
+                                value : [optimalLight, optimalHumidity, optimalSoil, optimalTemperature],
                                 name : 'Optimal plant conditions'
                             }
                         ]
@@ -234,13 +237,17 @@
                     }
                 });
             }
+
         },
+
         created: function() {
             this.getTemperature(200);
             this.getHumidity(200);
             this.getLight(200);
             this.getSoil(200);
-        }
+
+        },
+
     }
 </script>
 

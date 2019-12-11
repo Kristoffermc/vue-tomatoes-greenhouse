@@ -1,6 +1,6 @@
 <template>
     <div>
-        <custom-slider id="slider" min="-1" max="100" step="1" @change="lol(''+slider)" :values="sliderValues" raising v-model="slider" />
+        <custom-slider id="slider" min="-1" max="100" step="1" @change="changeLight(slider)" :values="sliderValues" raising v-model="slider" />
     </div>
 
 
@@ -21,13 +21,12 @@
             CustomSlider
         },
         methods: {
-            lol(value) {
+            changeLight(value) {
                 restService.changeLight(value);
             }
         },
         data() {
             return {
-                listOfInfo: [],
                 slider: "40",
                 handleSlider: "",
                 sliderValues: [
